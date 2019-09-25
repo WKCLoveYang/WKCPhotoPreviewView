@@ -53,7 +53,19 @@
 - (void)setImage:(UIImage *)image
 {
     _image = image;
-    self.zoomScale = 1.0;
+    if (self.contentMode == UIViewContentModeScaleAspectFill) {
+        CGFloat scale = 0.0;
+        if (image.size.height / image.size.width > self.frame.size.height / self.frame.size.width) {
+           CGFloat width = self.frame.size.height * (image.size.width / image.size.height);
+            scale = self.frame.size.width / width;
+        } else {
+           CGFloat height = self.frame.size.width * (image.size.height / image.size.width);
+            scale = self.frame.size.height / height;
+        }
+        self.zoomScale = scale;
+    } else {
+        self.zoomScale = 1.0;
+    }
     self.imageView.image = image;
 }
 
